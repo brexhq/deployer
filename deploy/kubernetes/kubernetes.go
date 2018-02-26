@@ -1,6 +1,7 @@
 package kubernetes
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -8,6 +9,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/google/uuid"
 	"github.com/mitchellh/mapstructure"
 
 	"github.com/pagarme/deployer/deploy"
@@ -112,7 +114,7 @@ func (n *Kubernetes) compileFiles(ctx pipeline.Context, files []string, outDir s
 }
 
 func (n *Kubernetes) compileFile(ctx pipeline.Context, in, outDir string) error {
-	out := path.Join(outDir, path.Base(in))
+	out := path.Join(outDir, fmt.Sprintf("%s-%s", uuid.New().String(), path.Base(in)))
 
 	w, err := os.OpenFile(out, os.O_CREATE|os.O_WRONLY, 0644)
 
